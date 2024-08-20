@@ -47,6 +47,19 @@ func CursorPreviousLine(n int) {
 	CursorHorizontalAbsolute(0)
 }
 
+func LastLine() {
+	screen := getScreen()
+	CursorAbsolute(0, int(screen.window.bottom))
+}
+
+func IsLastLine() bool {
+	screen := getScreen()
+	if screen.window.bottom == screen.cursorPosition.y {
+		return true
+	}
+	return false
+}
+
 func CursorAbsolute(x int, y int) {
 	handle := syscall.Handle(os.Stdout.Fd())
 
@@ -84,9 +97,9 @@ func CursorHorizontalAbsolute(x int) {
 	procSetConsoleCursorPosition.Call(uintptr(handle), uintptr(*(*int32)(unsafe.Pointer(&cursor))))
 }
 
-func GetCursorPosition() (Short, Short) {
+func GetCursorPosition() (int, int) {
 	screen := getScreen()
-	return screen.cursorPosition.x, screen.cursorPosition.y
+	return int(screen.cursorPosition.x), int(screen.cursorPosition.y)
 }
 
 func CursorShow() {

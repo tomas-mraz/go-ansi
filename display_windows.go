@@ -3,14 +3,20 @@
 package ansi
 
 import (
+	"golang.org/x/term"
 	"os"
 	"syscall"
 	"unsafe"
 )
 
-func GetSize() (Short, Short) {
+func GetTerminalSize() (int, int) {
+	width, height, _ := term.GetSize(int(os.Stdout.Fd()))
+	return width, height
+}
+
+func GetScreenSize() (int, int) {
 	screen := getScreen()
-	return screen.size.x, screen.size.y
+	return int(screen.size.x), int(screen.size.y)
 }
 
 func getScreen() consoleScreenBufferInfo {
@@ -40,4 +46,9 @@ func EraseInLine(mode int) {
 		x = csbi.size.x
 	}
 	procFillConsoleOutputCharacter.Call(uintptr(handle), uintptr(' '), uintptr(x), uintptr(*(*int32)(unsafe.Pointer(&cursor))), uintptr(unsafe.Pointer(&w)))
+}
+
+func GetBottomScrollIndex() int {
+	screen := getScreen()
+	return int(screen.window.bottom)
 }
