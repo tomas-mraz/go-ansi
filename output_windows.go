@@ -1,16 +1,17 @@
+//go:build windows
+
 package ansi
 
 import (
 	"bytes"
 	"fmt"
+	"github.com/mattn/go-isatty"
 	"io"
 	"os"
 	"strconv"
 	"strings"
 	"syscall"
 	"unsafe"
-
-	"github.com/mattn/go-isatty"
 )
 
 var (
