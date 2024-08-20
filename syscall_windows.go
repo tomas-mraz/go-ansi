@@ -17,20 +17,20 @@ var (
 )
 
 type wchar uint16
-type short int16
+type Short int16
 type dword uint32
 type word uint16
 
 type coord struct {
-	x short
-	y short
+	x Short
+	y Short
 }
 
 type smallRect struct {
-	left   short
-	top    short
-	right  short
-	bottom short
+	left   Short
+	top    Short
+	right  Short
+	bottom Short
 }
 
 type consoleScreenBufferInfo struct {

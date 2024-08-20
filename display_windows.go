@@ -8,6 +8,19 @@ import (
 	"unsafe"
 )
 
+func GetSize() (Short, Short) {
+	screen := getScreen()
+	return screen.size.x, screen.size.y
+}
+
+func getScreen() consoleScreenBufferInfo {
+	handle := syscall.Handle(os.Stdout.Fd())
+
+	var csbi consoleScreenBufferInfo
+	procGetConsoleScreenBufferInfo.Call(uintptr(handle), uintptr(unsafe.Pointer(&csbi)))
+	return csbi
+}
+
 func EraseInLine(mode int) {
 	handle := syscall.Handle(os.Stdout.Fd())
 
@@ -15,7 +28,7 @@ func EraseInLine(mode int) {
 	procGetConsoleScreenBufferInfo.Call(uintptr(handle), uintptr(unsafe.Pointer(&csbi)))
 
 	var w uint32
-	var x short
+	var x Short
 	cursor := csbi.cursorPosition
 	switch mode {
 	case 1:
