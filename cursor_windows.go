@@ -52,6 +52,11 @@ func LastLine() {
 	CursorAbsolute(0, int(screen.window.bottom))
 }
 
+func BottomOffset() int {
+	screen := getScreen()
+	return int(screen.cursorPosition.y - screen.window.bottom)
+}
+
 func IsLastLine() bool {
 	screen := getScreen()
 	if screen.window.bottom == screen.cursorPosition.y {
